@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Todo } from '../../model/todo';
 import { TodoService } from '../../services/todo.service';
 import { FormControl } from '@angular/forms';
@@ -19,7 +18,7 @@ export class TodoListComponent implements OnInit {
     editForm: boolean;
     noData: boolean;
 
-    constructor(private router: Router, private todoService: TodoService) {}
+    constructor(private todoService: TodoService) {}
 
     ngOnInit() {
         this.prepareDate();
@@ -44,10 +43,6 @@ export class TodoListComponent implements OnInit {
         }
     }
 
-    onClickEditTodoDetail(id) {
-        this.router.navigate(['/todo-detail'], { queryParams: { id } });
-    }
-
     onClickTodoDelete(id) {
         this.todoService.deleteTodoDetail(id);
         this.loadAllTodoList();
@@ -70,6 +65,8 @@ export class TodoListComponent implements OnInit {
 
     drop(event: CdkDragDrop<string[]>) {
         moveItemInArray(this.todos, event.previousIndex, event.currentIndex);
+        const sortIndex = this.todos.findIndex((item) => item.pinned === true);
+        this.todos.push(...this.todos.splice(0, sortIndex));
     }
 
     onTodoSubmitForm() {

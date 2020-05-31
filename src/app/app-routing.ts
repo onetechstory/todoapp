@@ -4,11 +4,11 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
     {
         path: '',
-        redirectTo: 'todo-list',
+        redirectTo: 'todo',
         pathMatch: 'full'
     },
     {
-        path: 'todo-list',
+        path: 'todo',
         loadChildren: () =>
             import('./components/todo-list/todo-list.module').then(
                 (mod) => mod.TodoListModule

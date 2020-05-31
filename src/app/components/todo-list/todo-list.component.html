@@ -1,23 +1,26 @@
-<div class="container">
+<div class="container-fluid p-0 main-wrap">
     <div class="row">
         <div class="col-sm-12">
             <div
-                class="todolist d-flex justify-content-center align-items-center"
+                class="todolist d-flex justify-content-center align-items-center flex-column"
             >
+                <div class="text-white text-center font-weight-bold main-head">
+                    To Do
+                </div>
                 <div
-                    class="todolist__main d-flex flex-column bg-white shadow-lg"
+                    class="todolist-main d-flex flex-column bg-white shadow-lg"
                 >
-                    <div class="todolist__header">
-                        <div class="todolist__header--date">
+                    <div class="todolist-header">
+                        <div class="todolist-header-date">
                             <span class="date--day">{{ date.date }}</span>
-                            <div class="warpper">
+                            <div class="wrapper-date">
                                 <span class="date--month">{{
                                     date.month
                                 }}</span>
                                 <span class="date--year">{{ date.year }}</span>
                             </div>
                             <button
-                                class="add__circle"
+                                class="add-circle"
                                 (click)="onTodoSubmitForm(todoForm)"
                             >
                                 <svg
@@ -40,7 +43,7 @@
                             novalidate
                         >
                             <input
-                                class="add__input"
+                                class="add-input"
                                 type="text"
                                 name="task"
                                 [formControl]="task"
@@ -49,7 +52,7 @@
                             />
                         </form>
                     </div>
-                    <div class="todolist__result pt-2">
+                    <div class="todolist-list pt-2">
                         <ul class="p-0 mt-4" *ngIf="noData">
                             <li class="text-secondary text-center">
                                 No Tasks
@@ -62,7 +65,7 @@
                             (cdkDropListDropped)="drop($event)"
                         >
                             <div
-                                class="list__task"
+                                class="list-task"
                                 *ngFor="let item of todos"
                                 cdkDrag
                                 [cdkDragDisabled]="item.pinned"
@@ -72,9 +75,9 @@
                                     *cdkDragPlaceholder
                                 ></div>
                                 <button
-                                    class="list__task--done"
-                                    [class.list__task--checked]="item.isDone"
-                                    [class.list__task--check]="!item.isDone"
+                                    class="list-task-done"
+                                    [class.list-task-checked]="item.isDone"
+                                    [class.list-task-check]="!item.isDone"
                                     (click)="markAsDone(item.id)"
                                 >
                                     <svg
@@ -89,7 +92,7 @@
                                     </svg>
                                 </button>
                                 <div
-                                    class="list__task--text text-capitalize pl-2"
+                                    class="list-task-text text-capitalize pl-2"
                                     [class.text-striked]="item.isDone"
                                 >
                                     {{ item.task }}
@@ -102,9 +105,9 @@
                                     class="list-task-pinned"
                                     *ngIf="item.pinned"
                                 />
-                                <div class="wrapper--left ml-auto">
+                                <div class="wrapper-actions-left ml-auto">
                                     <button
-                                        class="list__task--pin"
+                                        class="list-task-pin"
                                         (click)="markAsPinned(item.id)"
                                     >
                                         <img
@@ -114,7 +117,7 @@
                                         />
                                     </button>
                                     <button
-                                        class="list__task--edit ml-2"
+                                        class="list-task-edit ml-2"
                                         (click)="onClickToDoEdit(item.id)"
                                     >
                                         <svg
@@ -138,7 +141,7 @@
                                         </svg>
                                     </button>
                                     <button
-                                        class="list__task--del ml-2"
+                                        class="list-task-delete ml-2"
                                         (click)="onClickTodoDelete(item.id)"
                                     >
                                         <svg
@@ -198,7 +201,7 @@
                 </svg>
             </div>
             <input
-                class="add__input mt-3"
+                class="add-input mt-3"
                 type="text"
                 name="edit-task"
                 [formControl]="edittask"
