@@ -1,0 +1,227 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div
+                class="todolist d-flex justify-content-center align-items-center"
+            >
+                <div
+                    class="todolist__main d-flex flex-column bg-white shadow-lg"
+                >
+                    <div class="todolist__header">
+                        <div class="todolist__header--date">
+                            <span class="date--day">{{ date.date }}</span>
+                            <div class="warpper">
+                                <span class="date--month">{{
+                                    date.month
+                                }}</span>
+                                <span class="date--year">{{ date.year }}</span>
+                            </div>
+                            <button
+                                class="add__circle"
+                                (click)="onTodoSubmitForm(todoForm)"
+                            >
+                                <svg
+                                    height="50"
+                                    width="50"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 512 512"
+                                >
+                                    <path
+                                        d="M256,48C141.31,48,48,141.31,48,256s93.31,208,208,208,208-93.31,208-208S370.69,48,256,48Zm96,224H272v80H240V272H160V240h80V160h32v80h80Z"
+                                    />
+                                </svg>
+                            </button>
+                        </div>
+                        <form
+                            id="todoForm"
+                            class="pt-2"
+                            #todoForm="ngForm"
+                            (ngSubmit)="onTodoSubmitForm()"
+                            novalidate
+                        >
+                            <input
+                                class="add__input"
+                                type="text"
+                                name="task"
+                                [formControl]="task"
+                                placeholder="Press 'Enter' to add your task.. "
+                                autocomplete="off"
+                            />
+                        </form>
+                    </div>
+                    <div class="todolist__result pt-2">
+                        <ul class="p-0 mt-4" *ngIf="noData">
+                            <li class="text-secondary text-center">
+                                No Tasks
+                            </li>
+                        </ul>
+                        <ul
+                            class="p-0"
+                            *ngIf="!noData"
+                            cdkDropList
+                            (cdkDropListDropped)="drop($event)"
+                        >
+                            <div
+                                class="list__task"
+                                *ngFor="let item of todos"
+                                cdkDrag
+                                [cdkDragDisabled]="item.pinned"
+                            >
+                                <div
+                                    class="item-custom-placeholder"
+                                    *cdkDragPlaceholder
+                                ></div>
+                                <button
+                                    class="list__task--done"
+                                    [class.list__task--checked]="item.isDone"
+                                    [class.list__task--check]="!item.isDone"
+                                    (click)="markAsDone(item.id)"
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="20"
+                                        height="20"
+                                        viewBox="0 0 512 512"
+                                    >
+                                        <path
+                                            d="M256,48C141.31,48,48,141.31,48,256s93.31,208,208,208,208-93.31,208-208S370.69,48,256,48ZM218,360.38,137.4,270.81l23.79-21.41,56,62.22L350,153.46,374.54,174Z"
+                                        />
+                                    </svg>
+                                </button>
+                                <div
+                                    class="list__task--text text-capitalize pl-2"
+                                    [class.text-striked]="item.isDone"
+                                >
+                                    {{ item.task }}
+                                </div>
+
+                                <img
+                                    width="20"
+                                    height="20"
+                                    src="assets/img/push-pin.png"
+                                    class="list-task-pinned"
+                                    *ngIf="item.pinned"
+                                />
+                                <div class="wrapper--left ml-auto">
+                                    <button
+                                        class="list__task--pin"
+                                        (click)="markAsPinned(item.id)"
+                                    >
+                                        <img
+                                            width="20"
+                                            height="20"
+                                            src="assets/img/push-pin.png"
+                                        />
+                                    </button>
+                                    <button
+                                        class="list__task--edit ml-2"
+                                        (click)="onClickToDoEdit(item.id)"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="20"
+                                            height="20"
+                                            viewBox="0 0 512 512"
+                                        >
+                                            <path
+                                                d="M464.37,49.2a22.07,22.07,0,0,0-31.88-.76L414.18,66.69l31.18,31.1,18-17.91A22.16,22.16,0,0,0,464.37,49.2Z"
+                                            />
+                                            <polygon
+                                                points="252.76 336 239.49 336 208 336 176 336 176 304 176 272.51 176 259.24 185.4 249.86 323.54 112 48 112 48 464 400 464 400 188.46 262.14 326.6 252.76 336"
+                                            />
+                                            <polygon
+                                                points="400 143.16 432.79 110.3 401.7 79.21 368.85 112 400 112 400 143.16"
+                                            />
+                                            <polygon
+                                                points="208 304 239.49 304 400 143.16 400 112 368.85 112 208 272.51 208 304"
+                                            />
+                                        </svg>
+                                    </button>
+                                    <button
+                                        class="list__task--del ml-2"
+                                        (click)="onClickTodoDelete(item.id)"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="20"
+                                            height="20"
+                                            viewBox="0 0 512 512"
+                                        >
+                                            <path
+                                                d="M296,64H216a7.91,7.91,0,0,0-8,8V96h96V72A7.91,7.91,0,0,0,296,64Z"
+                                                style="fill: none;"
+                                            />
+                                            <path
+                                                d="M292,64H220a4,4,0,0,0-4,4V96h80V68A4,4,0,0,0,292,64Z"
+                                                style="fill: none;"
+                                            />
+                                            <path
+                                                d="M447.55,96H336V48a16,16,0,0,0-16-16H192a16,16,0,0,0-16,16V96H64.45L64,136H97l20.09,314A32,32,0,0,0,149,480H363a32,32,0,0,0,31.93-29.95L415,136h33ZM176,416l-9-256h33l9,256Zm96,0H240V160h32ZM296,96H216V68a4,4,0,0,1,4-4h72a4,4,0,0,1,4,4Zm40,320H303l9-256h33Z"
+                                            />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div
+        class="edit-task h-100 w-100 shadow-lg justify-content-center align-items-center"
+        [class.open-edit]="editForm"
+    >
+        <form
+            *ngIf="edittaskData"
+            id="todoEditForm"
+            #todoForm="ngForm"
+            (ngSubmit)="onTodoEditForm(edittaskData)"
+            novalidate
+            class="bg-white p-3"
+        >
+            <div
+                class="edit-header h4 d-flex justify-content-between align-items-center"
+            >
+                <strong>Edit</strong>
+                <svg
+                    style="cursor: pointer;"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="30"
+                    height="30"
+                    viewBox="0 0 512 512"
+                    (click)="editForm = !editForm"
+                >
+                    <path
+                        d="M289.94,256l95-95A24,24,0,0,0,351,127l-95,95-95-95A24,24,0,0,0,127,161l95,95-95,95A24,24,0,1,0,161,385l95-95,95,95A24,24,0,0,0,385,351Z"
+                    />
+                </svg>
+            </div>
+            <input
+                class="add__input mt-3"
+                type="text"
+                name="edit-task"
+                [formControl]="edittask"
+                placeholder="Edit To Do"
+                value="{{ edittaskData.task }}"
+            />
+            <div
+                class="actions d-flex justify-content-center align-items-center mt-2"
+            >
+                <button
+                    type="submit"
+                    class="btn btn-outline-success border btn-md mr-2 p-1 px-3"
+                >
+                    Save
+                </button>
+                <button
+                    type="button"
+                    (click)="editForm = !editForm"
+                    class="btn btn-outline-dark border btn-md ml-2 p-1 px-3"
+                >
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
